@@ -18,8 +18,23 @@ export const search = event => {
 
 export const add = (description) => {
     return dispatch => {
-        axios.post(URL, { description})
-        .then(response => dispatch({type: 'TODO_ADDED', payload: response.data}))
-        .then(response => dispatch(search()))
+        axios.post(URL, { description })
+            .then(response => dispatch({ type: 'TODO_ADDED', payload: response.data }))
+            .then(response => dispatch(search()))
+    }
+}
+
+export const markAsDone = todo => {
+    return dispatch => {
+        axios.put(`${URL}/${todo._id}`, { ...todo, done: true })
+            .then(response => dispatch(search()))
+    }
+}
+
+export const markAsPending = todo => {
+    return dispatch => {
+        axios.put(`${URL}/${todo._id}`, { ...todo, done: false })
+            .then(response => dispatch(search()))
+
     }
 }
